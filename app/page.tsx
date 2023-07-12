@@ -1,113 +1,210 @@
-import Image from 'next/image'
+"use client";
 
-export default function Home() {
+import { feedbackMachine } from "@/machines/feedbackMachine";
+import { useMachine } from "@xstate/react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ChevronRightIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { Textarea } from "@/components/ui/textarea";
+
+function Feedback() {
+  const [state, send] = useMachine(feedbackMachine);
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <div className="container mx-auto px-4">
+      <div className="preview flex min-h-[350px] w-full justify-center p-5 items-center">
+        {state.matches("closed") && (
+          <Card className="w-[350px]">
+            <CardHeader className="p-2">
+              <div className="p-4">
+                <CardTitle className="leading-tight"></CardTitle>
+                <CardDescription className="py-2">
+                  Feedback form closed.
+                </CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent className="flex justify-around">
+              <Button
+                onClick={() => {
+                  send({ type: "restart" });
+                }}
+                variant="outline"
+                className="h-20 w-32 text-base hover:bg-green-900 bg-green-900 bg-opacity-20"
+              >
+                Provide more feedback
+              </Button>
+            </CardContent>
+            <CardFooter></CardFooter>
+          </Card>
+        )}
+        {state.matches("prompt") && (
+          <div className="step">
+            <Card className="w-[350px]">
+              <CardHeader className="p-2">
+                <div className="flex justify-between">
+                  <div className="p-4">
+                    <CardTitle className="leading-tight">
+                      How was your experience?
+                    </CardTitle>
+                    <CardDescription className="py-2">feedback</CardDescription>
+                  </div>
+                  <div>
+                    <Button
+                      onClick={() => {
+                        send({ type: "close" });
+                      }}
+                      variant="ghost"
+                    >
+                      <Cross1Icon className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="flex justify-around">
+                <Button
+                  onClick={() => send({ type: "feedback.bad" })}
+                  variant="outline"
+                  className="h-20 w-32 text-base hover:bg-red-900 bg-red-900 bg-opacity-20"
+                >
+                  Bad
+                </Button>
+                <Button
+                  onClick={() => send({ type: "feedback.good" })}
+                  variant="outline"
+                  className="h-20 w-32 text-base hover:bg-green-900 bg-green-900 bg-opacity-20"
+                >
+                  Good
+                </Button>
+              </CardContent>
+              <CardFooter></CardFooter>
+            </Card>
+          </div>
+        )}
+
+        {state.matches("thanks") && (
+          <Card className="w-[350px]">
+            <CardHeader className="p-2">
+              <div className="flex justify-between">
+                <div className="p-4">
+                  <CardTitle className="leading-tight">
+                    Thanks for your feedback.
+                  </CardTitle>
+                </div>
+                <div>
+                  <Button
+                    onClick={() => {
+                      send({ type: "close" });
+                    }}
+                    variant="ghost"
+                  >
+                    <Cross1Icon className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex justify-around">
+              {state.context.feedback.length > 0 && (
+                <p>"{state.context.feedback}"</p>
+              )}
+            </CardContent>
+            <CardFooter></CardFooter>
+          </Card>
+        )}
+
+        {state.matches("form") && (
+          <Card className="w-[350px]">
+            <CardHeader className="p-2">
+              <div className="flex justify-between">
+                <div className="p-4">
+                  <CardTitle className="leading-tight">
+                    What can we do better?
+                  </CardTitle>
+                  <CardDescription className="py-2">
+                    please write your feedback
+                  </CardDescription>
+                </div>
+                <div>
+                  <Button
+                    onClick={() => {
+                      send({ type: "close" });
+                    }}
+                    variant="ghost"
+                  >
+                    <Cross1Icon className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="flex justify-around">
+              <form
+                className="step"
+                onSubmit={(ev) => {
+                  ev.preventDefault();
+                  send({
+                    type: "submit",
+                  });
+                }}
+              >
+                <Textarea
+                  id="feedback"
+                  name="feedback"
+                  rows={4}
+                  className="my-4"
+                  placeholder="So many things..."
+                  value={state.context.feedback}
+                  onChange={(ev) => {
+                    send({
+                      type: "feedback.update",
+                      value: ev.target.value,
+                    });
+                  }}
+                />
+                <div className="flex justify-between">
+                  <Button
+                    className="button"
+                    type="button"
+                    onClick={() => {
+                      send({ type: "back" });
+                    }}
+                  >
+                    Back
+                  </Button>
+
+                  <Button
+                    className="button"
+                    disabled={!state.can({ type: "submit" })}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+            <CardFooter></CardFooter>
+          </Card>
+        )}
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </div>
+  );
 }
+
+function App() {
+  return <Feedback />;
+}
+
+export default App;
