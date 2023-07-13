@@ -115,7 +115,7 @@ function Feedback() {
               </CardHeader>
               <CardContent className="flex justify-around">
                 {state.context.feedback.length > 0 && (
-                  <p>"{state.context.feedback}"</p>
+                  <p>{state.context.feedback}</p>
                 )}
               </CardContent>
               <CardFooter></CardFooter>
