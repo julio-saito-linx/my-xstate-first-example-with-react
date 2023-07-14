@@ -13,6 +13,12 @@ import {
 } from "@/components/ui/card";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function Feedback() {
   const [state, send] = useMachine(feedbackMachine);
@@ -32,15 +38,24 @@ function Feedback() {
                 </div>
               </CardHeader>
               <CardContent className="flex justify-around">
-                <Button
-                  onClick={() => {
-                    send({ type: "restart" });
-                  }}
-                  variant="outline"
-                  className="h-20 w-32 text-base hover:bg-green-900 bg-green-900 bg-opacity-20"
-                >
-                  Provide more feedback
-                </Button>
+                <TooltipProvider>
+                  <Tooltip delayDuration={200}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={() => {
+                          send({ type: "restart" });
+                        }}
+                        variant="outline"
+                        className="h-20 w-32 text-base hover:bg-green-900 bg-green-900 bg-opacity-20"
+                      >
+                        Provide more feedback
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>restart</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </CardContent>
               <CardFooter></CardFooter>
             </Card>
@@ -60,32 +75,59 @@ function Feedback() {
                       </CardDescription>
                     </div>
                     <div>
-                      <Button
-                        onClick={() => {
-                          send({ type: "close" });
-                        }}
-                        variant="ghost"
-                      >
-                        <Cross1Icon className="h-4 w-4" />
-                      </Button>
+                      <TooltipProvider>
+                        <Tooltip delayDuration={200}>
+                          <TooltipTrigger asChild>
+                            <Button
+                              onClick={() => {
+                                send({ type: "close" });
+                              }}
+                              variant="ghost"
+                            >
+                              <Cross1Icon className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>close</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="flex justify-around">
-                  <Button
-                    onClick={() => send({ type: "feedback.bad" })}
-                    variant="outline"
-                    className="h-20 w-32 text-base hover:bg-red-900 bg-red-900 bg-opacity-20"
-                  >
-                    Bad
-                  </Button>
-                  <Button
-                    onClick={() => send({ type: "feedback.good" })}
-                    variant="outline"
-                    className="h-20 w-32 text-base hover:bg-green-900 bg-green-900 bg-opacity-20"
-                  >
-                    Good
-                  </Button>
+                  <TooltipProvider>
+                    <Tooltip delayDuration={200}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => send({ type: "feedback.bad" })}
+                          variant="outline"
+                          className="h-20 w-32 text-base hover:bg-red-900 bg-red-900 bg-opacity-20"
+                        >
+                          Bad
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>feedback.bad</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip delayDuration={200}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          onClick={() => send({ type: "feedback.good" })}
+                          variant="outline"
+                          className="h-20 w-32 text-base hover:bg-green-900 bg-green-900 bg-opacity-20"
+                        >
+                          Good
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>"feedback.good</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </CardContent>
                 <CardFooter></CardFooter>
               </Card>
@@ -102,14 +144,23 @@ function Feedback() {
                     </CardTitle>
                   </div>
                   <div>
-                    <Button
-                      onClick={() => {
-                        send({ type: "close" });
-                      }}
-                      variant="ghost"
-                    >
-                      <Cross1Icon className="h-4 w-4" />
-                    </Button>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={200}>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={() => {
+                              send({ type: "close" });
+                            }}
+                            variant="ghost"
+                          >
+                            <Cross1Icon className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>close</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
               </CardHeader>
@@ -135,14 +186,23 @@ function Feedback() {
                     </CardDescription>
                   </div>
                   <div>
-                    <Button
-                      onClick={() => {
-                        send({ type: "close" });
-                      }}
-                      variant="ghost"
-                    >
-                      <Cross1Icon className="h-4 w-4" />
-                    </Button>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={200}>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={() => {
+                              send({ type: "close" });
+                            }}
+                            variant="ghost"
+                          >
+                            <Cross1Icon className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>close</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
               </CardHeader>
@@ -171,22 +231,40 @@ function Feedback() {
                     }}
                   />
                   <div className="flex justify-between">
-                    <Button
-                      className="button"
-                      type="button"
-                      onClick={() => {
-                        send({ type: "back" });
-                      }}
-                    >
-                      Back
-                    </Button>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={200}>
+                        <TooltipTrigger asChild>
+                          <Button
+                            className="button"
+                            type="button"
+                            onClick={() => {
+                              send({ type: "back" });
+                            }}
+                          >
+                            Back
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>back</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
 
-                    <Button
-                      className="button"
-                      disabled={!state.can({ type: "submit" })}
-                    >
-                      Submit
-                    </Button>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={200}>
+                        <TooltipTrigger asChild>
+                          <Button
+                            className="button"
+                            disabled={!state.can({ type: "submit" })}
+                          >
+                            Submit
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>submit</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </form>
               </CardContent>
