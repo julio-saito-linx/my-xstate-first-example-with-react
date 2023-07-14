@@ -3,6 +3,9 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
+    "xstate.after(1000)#feedback.submitting": {
+      type: "xstate.after(1000)#feedback.submitting";
+    };
     "xstate.init": { type: "xstate.init" };
   };
   invokeSrcNameMap: {};
@@ -21,6 +24,6 @@ export interface Typegen0 {
     "can.submit": "submit";
   };
   eventsCausingServices: {};
-  matchesStates: "closed" | "form" | "prompt" | "thanks";
+  matchesStates: "closed" | "form" | "prompt" | "submitting" | "thanks";
   tags: never;
 }

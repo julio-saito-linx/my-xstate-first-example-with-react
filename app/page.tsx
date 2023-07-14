@@ -124,7 +124,7 @@ function Feedback() {
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>"feedback.good</p>
+                        <p>feedback.good</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -132,6 +132,40 @@ function Feedback() {
                 <CardFooter></CardFooter>
               </Card>
             </div>
+          )}
+
+          {state.matches("submitting") && (
+            <Card className="w-[350px]">
+              <CardHeader className="p-2">
+                <div className="flex justify-between">
+                  <div className="p-4">
+                    <CardTitle className="leading-tight text-base">
+                      Sending response...
+                    </CardTitle>
+                  </div>
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={200}>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={() => {
+                              send({ type: "close" });
+                            }}
+                            variant="ghost"
+                          >
+                            <Cross1Icon className="h-4 w-4" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>close</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardFooter></CardFooter>
+            </Card>
           )}
 
           {state.matches("thanks") && (
@@ -166,7 +200,7 @@ function Feedback() {
               </CardHeader>
               <CardContent className="flex justify-around">
                 {state.context.feedback.length > 0 && (
-                  <p>{state.context.feedback}</p>
+                  <p>Your feedback was: {state.context.feedback}</p>
                 )}
               </CardContent>
               <CardFooter></CardFooter>

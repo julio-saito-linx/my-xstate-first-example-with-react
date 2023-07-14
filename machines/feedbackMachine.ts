@@ -24,7 +24,7 @@ const schema = {
 
 export const feedbackMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QDMyQEYEMDGBrAxNgDYD2sYA2gAwC6ioADmQJYAuzJAdvSAB6IAWAEwAaEAE9EARgDsADgB0VAGxy5AVgCcwgMw6BA9UIC+xsagw5cChgCcSAWwat8FiFjwKoJEhGp0kECZYNg5uQP4EdQEZBU01TSopAU0dbU11MUkEHSohBXV1OR0ZTSE5ZRkZZSEBU3M0dysbeycXNw9rLD9aHmDQrh5I6Nj4uUTk1PTMiUQhISoFWTlk5Sk8zWUqATl6kA7m5BJbB1dGzoUAVwYITFZKXsD+9kGIxBkpdQV5zVLZXNy8SyiBWChi8jWmyEvyquzM+3Oh2Op06-j6LBe4VAkRqUjimgJyiKAio2iEOmBCCkyk0ChpiXkxTk8x06j2B08RxO+Fgl3QDjYaKeGLCQ0QZViaRk6ik6xUeiEMkpUlBKzUhiJBioVTq8I51mIZEg+FscFYmFsrCFjBFr2xcxqCg02w+MjSqUKysKCh0ckZMgM6zWQjZe04vjgPH16JCmLFCAAtMpKUn2YjPHZHM4YwMsXxBFIdHEVeptmlclVlfICqoNGS9AYjGnLJzkTm428ENU8bCBDT9CpScrmT6VXINdESVUZM2mp5WAALTCcXDwYWx0Wd2VpJaFZkh5l+qgU2ZU8Y19Ss1REqS-ITKWcXQ3kCDtzf2qkCIvyKjymppQs+yrRR1FrLRdH0QwTFMYwgA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QDMyQEYEMDGBrAxNgDYD2sYA2gAwC6ioADmQJYAuzJAdvSAB6IAWAEwAaEAE9EARgDsADgB0VAGxy5AZjnKZVGcpUBfA2NQYcuBQwBOJALYNW+UxCx4FUEiQjU6SEE1g2Dm4-fgQAVkiFdWVlITkZIXUpAQFw9TFJBHUqIQVIjQK5IW0BGSMTNBdzSxt7R2dXCyxvWh4AoK4eMMjw6Nj4xOTU9MzEISEqBVk5KRSBNWVk8uMQRprkEitbJyqmhQBXBghMVko2vw72LtDERLz9GSkATiFn5+TlASkxhFmFMrycKzARUZ4ycKpCprPYbLY7Jo+dosa4hUBhOLPaIyGQxcJzJJUMq-KTKLFk55UORUFQLKjqYHQ9ZuTbbfCwA7oWxsJGXFHBbqID4CBQ4gTPWT6ITpCUk-6zNSabS6fTKJmwtzEMiQfBWOCsTBWVi8xj8m7o8ZxBRycJEp7i5TAyYZCTSKKaeSO5SyeRCKTqsxuDlctjsThQfC8WAGs4KTDIM5WAAUUhpVAAlLtAxZg9zWGGoCb-Ga0XxpEJ5PkPeFcUJhFI1CTKfkluEvjbZJTnkZVpwvHAeMzcMjAqjBQgALTKX5TgPVNzWOwOEedUthesKN7AiGQj6kgQkyttxVaHR6QyrIcKVm2Fdj24IPRYqQFcVpbQJH6uhANvLJE-KueaqXhqFisAAFpgnC4PAfKjgKD5SOo7wKB8lJPI64QVuoB7fg2WJtukqSgtSjrqHO+xauQEB3ghFo-gI6iitSVDhM8IJpMkoh4UeqgaKeKoXpU2YKLmobMOGtHmmWP4pMoVbqH6-HqPIzxygRZHEVSKjpD2BhAA */
     id: "feedback",
     initial: "prompt",
     schema,
@@ -35,10 +35,11 @@ export const feedbackMachine = createMachine(
     states: {
       prompt: {
         on: {
-          "feedback.good": "thanks",
+          "feedback.good": "submitting",
           "feedback.bad": "form",
         },
       },
+
       form: {
         on: {
           "feedback.update": {
@@ -47,17 +48,25 @@ export const feedbackMachine = createMachine(
           back: { target: "prompt" },
           submit: {
             cond: "can.submit",
-            target: "thanks",
+            target: "submitting",
           },
         },
       },
+
       thanks: {},
+
       closed: {
         on: {
           restart: {
             target: "prompt",
             actions: "restart.action",
           },
+        },
+      },
+
+      submitting: {
+        after: {
+          "1000": "thanks",
         },
       },
     },
@@ -69,18 +78,12 @@ export const feedbackMachine = createMachine(
     actions: {
       "feedback.update.action": assign({
         feedback: (context, event) => {
-          if (event.type === "feedback.update") {
-            return event.value;
-          }
-          return context.feedback;
+          return event.value;
         },
       }),
       "restart.action": assign({
         feedback: (context, event) => {
-          if (event.type === "restart") {
-            return "";
-          }
-          return context.feedback;
+          return "";
         },
       }),
     },
