@@ -3,8 +3,9 @@
 export interface Typegen0 {
   "@@xstate/typegen": true;
   internalEvents: {
-    "xstate.after(1000)#feedback.submitting": {
-      type: "xstate.after(1000)#feedback.submitting";
+    "error.platform.feedback.submitting:invocation[0]": {
+      type: "error.platform.feedback.submitting:invocation[0]";
+      data: unknown;
     };
     "xstate.init": { type: "xstate.init" };
   };
@@ -17,7 +18,9 @@ export interface Typegen0 {
   };
   eventsCausingActions: {
     "feedback.update.action": "feedback.update";
+    "reset.error": "feedback.bad" | "feedback.good" | "submit";
     "restart.action": "restart";
+    "show.error": "error.platform.feedback.submitting:invocation[0]";
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {

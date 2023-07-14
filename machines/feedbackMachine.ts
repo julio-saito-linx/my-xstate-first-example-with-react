@@ -1,7 +1,7 @@
 import { assign, createMachine, interpret } from "xstate";
 
 const schema = {
-  context: {} as { feedback: string },
+  context: {} as { feedback: string; error: any },
   events: {} as
     | {
         type: "feedback.good";
@@ -24,13 +24,14 @@ const schema = {
 
 export const feedbackMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QDMyQEYEMDGBrAxNgDYD2sYA2gAwC6ioADmQJYAuzJAdvSAB6IAWAEwAaEAE9EARgDsADgB0VAGxy5AZjnKZVGcpUBfA2NQYcuBQwBOJALYNW+UxCx4FUEiQjU6SEE1g2Dm4-fgQAVkiFdWVlITkZIXUpAQFw9TFJBHUqIQVIjQK5IW0BGSMTNBdzSxt7R2dXCyxvWh4AoK4eMMjw6Nj4xOTU9MzEISEqBVk5KRSBNWVk8uMQRprkEitbJyqmhQBXBghMVko2vw72LtDERLz9GSkATiFn5+TlASkxhFmFMrycKzARUZ4ycKpCprPYbLY7Jo+dosa4hUBhOLPaIyGQxcJzJJUMq-KTKLFk55UORUFQLKjqYHQ9ZuTbbfCwA7oWxsJGXFHBbqID4CBQ4gTPWT6ITpCUk-6zNSabS6fTKJmwtzEMiQfBWOCsTBWVi8xj8m7o8ZxBRycJEp7i5TAyYZCTSKKaeSO5SyeRCKTqsxuDlctjsThQfC8WAGs4KTDIM5WAAUUhpVAAlLtAxZg9zWGGoCb-Ga0XxpEJ5PkPeFcUJhFI1CTKfkluEvjbZJTnkZVpwvHAeMzcMjAqjBQgALTKX5TgPVNzWOwOEedUthesKN7AiGQj6kgQkyttxVaHR6QyrIcKVm2Fdj24IPRYqQFcVpbQJH6uhANvLJE-KueaqXhqFisAAFpgnC4PAfKjgKD5SOo7wKB8lJPI64QVuoB7fg2WJtukqSgtSjrqHO+xauQEB3ghFo-gI6iitSVDhM8IJpMkoh4UeqgaKeKoXpU2YKLmobMOGtHmmWP4pMoVbqH6-HqPIzxygRZHEVSKjpD2BhAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QDMyQEYEMDGBrAxNgDYD2sYA2gAwC6ioADmQJYAuzJAdvSAB6IAWAEwAaEAE9EARikBmAHQB2KgNlTFADgCsQ2QOWyAvobGoMOXPIYAnEgFsGrfGYhY88qCRIRqdJCCZYNg5uf34ELQA2LXlZSMjZRUi5AE5oqQ0xSQQBDRT5NIEBKWSBFMSBSIFjUzRXCytbBycXN0ssH1oeQOCuHnComLiEpNT0zIlERIUNSorIxTShSsiakFaG5BJrO2c6tvkAVwYITFZKLv8e9j6wxEVZIXlIqkUhDSo1DTf3rMQhXTyARUKhSXQaGRaFQaNYbdxbHb4Nq+bosG6hUDhBL5RKKAQ6FJSIqyQl-BCPBRxN4pFIgolUXSw-abba7WCHdB2Ngoq5okL9RApIpKRRQ5a5SIpRZSMl6RTyXSyBlJLQaF4pGEmdbM9zEMiQfDWOCsTDWVg8xh826Y-6RJ7aKhaKTlKjaYpkwnyBmyPTvVWVIRaapauGWdmctjsThQfAQLhgeTMTgANxIuATofk4a5rCjUAQSdT2DOIV8FoCVoxfGkcvkWi0mkURKEoMdkVlToVakDijeHzK2iZ5nc2cjSZjYGstmsViIZwRdnkmdHufHBZTJGL6LLl0tQXRAoQUlBAmeYI0ul0ZXeKTJEKBve0cibZQWimMWs43jgPFDqP3-J3AgAC07aTCBkReiC0EwTB74hjqlg2PYjj-r0VbhMIUgKikWhCkqTrRHaZIyKeLaqOo2hXgYQ71PCrJoQeQF4golEaGqdpqoqsrLAqxRyDIyw6EICy0QcrAABaYJwuDwLyAHWtWR65AokQaI8dpxHI-EdlQXZKkIKpqlQGpiQ0erkBAjGATaykKJorb4g8TrfCRRIKioaiaDocqfGZI4cjmebWYp4SQpBWg+j6GpNtEDKynISgrPEQgyCSGQfoYQA */
     id: "feedback",
     initial: "prompt",
     schema,
     tsTypes: {} as import("./feedbackMachine.typegen").Typegen0,
     context: {
       feedback: "",
+      error: null,
     },
     states: {
       prompt: {
@@ -41,6 +42,7 @@ export const feedbackMachine = createMachine(
       },
 
       form: {
+        entry: "reset.error",
         on: {
           "feedback.update": {
             actions: "feedback.update.action",
@@ -65,8 +67,26 @@ export const feedbackMachine = createMachine(
       },
 
       submitting: {
-        after: {
-          "1000": "thanks",
+        entry: "reset.error",
+        invoke: {
+          src: (context, event) => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                if (Math.random() > 0.5) {
+                  resolve({ status: 200 });
+                } else {
+                  reject({ status: 500 });
+                }
+              }, 1000);
+            });
+          },
+          onDone: {
+            target: "thanks",
+          },
+          onError: {
+            target: "prompt",
+            actions: "show.error",
+          },
         },
       },
     },
@@ -84,6 +104,16 @@ export const feedbackMachine = createMachine(
       "restart.action": assign({
         feedback: (context, event) => {
           return "";
+        },
+      }),
+      "show.error": assign({
+        error: (context, event) => {
+          return "An error occurred while submitting feedback. Please try again.";
+        },
+      }),
+      "reset.error": assign({
+        error: (context, event) => {
+          return null;
         },
       }),
     },

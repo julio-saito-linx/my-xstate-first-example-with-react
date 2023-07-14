@@ -129,7 +129,11 @@ function Feedback() {
                     </Tooltip>
                   </TooltipProvider>
                 </CardContent>
-                <CardFooter></CardFooter>
+                <CardFooter>
+                  {state.context.error?.length > 0 && (
+                    <p className="text-red-500">{state.context.error}</p>
+                  )}
+                </CardFooter>
               </Card>
             </div>
           )}
@@ -308,8 +312,8 @@ function Feedback() {
         </div>
 
         {state.context && (
-          <div className="relative rounded-xl overflow-auto mx-auto w-3/4">
-            <div className="bg-white px-6 py-8 shadow-xl text-slate-700 max-w-md mx-auto overflow-auto text-sm leading-6 sm:text-base sm:leading-7 dark:bg-slate-800 dark:text-slate-400">
+          <div className="relative rounded-xl overflow-auto mx-auto w-full">
+            <div className="bg-white px-6 py-8 shadow-xl text-slate-700 mx-auto overflow-auto text-sm leading-6 sm:text-base sm:leading-7 dark:bg-slate-800 dark:text-slate-400">
               <pre className="text-white">
                 {JSON.stringify(
                   {
