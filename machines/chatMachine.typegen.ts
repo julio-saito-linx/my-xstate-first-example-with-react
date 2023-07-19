@@ -13,13 +13,13 @@ export interface Typegen0 {
     services: never;
   };
   eventsCausingActions: {
-    "message.buy": "buy";
+    "message.ask_name": "close" | "no" | "restart" | "xstate.init";
     "message.closed": "close";
-    "message.confirm": "submit";
+    "message.confirm_name": "submit";
     "message.menu": "back" | "welcome.message";
-    "message.prompt": "close" | "no" | "restart" | "xstate.init";
-    "message.sell": "sell";
-    "message.talk": "talk";
+    "message.search_for_product": "search_for_product";
+    "message.tranship_to_seller": "tranship_to_seller";
+    "message.tranship_to_suport": "tranship_to_suport";
     "message.welcome": "yes";
     "restart.action": "close" | "restart";
   };
@@ -29,13 +29,13 @@ export interface Typegen0 {
   };
   eventsCausingServices: {};
   matchesStates:
-    | "buy"
+    | "ask_name"
     | "closed"
-    | "confirm"
+    | "confirm_name"
     | "menu"
-    | "prompt"
-    | "sell"
-    | "talk"
+    | "search_for_product"
+    | "tranship_to_seller"
+    | "tranship_to_suport"
     | "welcome";
   tags: never;
 }

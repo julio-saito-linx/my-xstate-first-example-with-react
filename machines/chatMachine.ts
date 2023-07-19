@@ -2,10 +2,10 @@ import { assign, createMachine, interpret } from "xstate";
 
 export const chatMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QGMAWBDALgYmQGwHtYwBtABgF1FQAHIgS03oIDtqQAPRAFgCYAaEAE9EARjIBOAHSjuAZlEBWUQA5eqlfMUBfbYLRYpNAE4EAtjRywArgCMzjclSQg6sRszYuuCAGwrRKQB2CTUyOV9uMiVubkERBFEJQMUgiMjeeSDNFTldfQxMKWRWADN6YzNsITgndjcPVnYfCUU5KUVQ8LllXjlNUXixUUDIhVj-RSjQ0XyQAyKSlnLK7BYCOpcGpibvRH92yQiJDP8AiSGEVuC5Xl8g+XCJW805hakAdzA8ErMwbC+P3MYCkf1gsHQME2tAYOy8oB8ol4mRkZEyil8fUUihUZF8l1Ecm4Ulu3CRt3EuTIKl8b0KoLALGs2Fs1iE0NcsM8zTEmN8JOxql4oWyuRUl2OUjI0rCVLkQUydMMfyZ2GIeDwHO23L2iT5AuUahFKjFBKCQRJGmmijxByVRRVzMw6DwAGstVzdgjeXcDULjabhIgMWQpP5eLiyEFxFHIvapKyhCz0Mh3ZR6p74ZwffyeobhSpRf1Lrw0jJOlSVBIyIpeOF4+q8MnUx73HCeXrfXn-YWTcWgwgAlJuOaVMpotTRL48np5vTnW7m2nnDC2zrvZ3c4Kjb3AwluJEpAMAlGgmjMhF4-giJBsMY4M7jJhW40sz4etI5BJktEwqfZASkgyPIShClaPS6LO6wQHA7ALBma5etmCAALT4gOaFStK2E4ThQTxiY5iWAhr4dsoFqaNwNpTqkUTyIBKhHrc6h8PKrQ4rMs7vEsKxmCR7a6iExKRI8OL9LcGIEiMJLMRG47VtwEjxoCvxgPx67IeIviKMBNJjg8dxBIoUmBHIsljuIClKVx9KOupSGInwvDDtEikBLc9yliZMnInJllkIp8aJvZb5iGkFrVjiNK+NKISEiWJrBJ08rUui8hEg23x4CFHaiOFUiRSavgxVGyRyJcEgWqeUS1nlRbcPGC6ujlup5fKBU1kVJVxeVA7cLiw5kmxvDUVROg2YY17EBALUbnWoaxG0365GkpZTgxTHIrIfQhNiaiQdoQA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QGMAWBDALgYmQGwHtYwBtABgF1FQAHIgS03oIDtqQAPRAFgCYAaEAE9EATm4A6AKx8AzAEYAHN0Vleo+fIC+WwWiwT0sANYB9FugC2YbLACuAI0uNyVJCDqxGzNu64JFWUkAdl4ZYO5ggDZuWQ0BYUR5KVkJdVkybjJ5YKlFGO4dPQxMCWRWADN6ACdLcysbIThXdk9vVnZ-eQVFCSjRRVEoqWDFRSl5UQSRBE1e0O4VMO4JsnzZIpB9UvKWKtr662wWAhb3NqYOvzEpKWleMLJRBeD5MmDBGbfeCUV5LKeylksikaw2ui2JQkAHcwHhykdYfCCNYJNZYLB0DAzrQGJdfKAujFRBJRMDuqNxPIolFPkklBIFksZKt1pttmiwCw7LYwOhqmhTBUCNVTDRqgQIHZkJgcR48T5OoheJoflFRrIxskQflaYkELxFtJsmRZFFVLxcsFguyodZudhMNV0CxYKh6DRTJgCKZ7HRqrLKK0FVdCcrVX0NVqUnkaXTZnEJKbFA9RENVFEyMNbQZ7TynS63R6vT7iHg8GBqnKLorrgaI+rAtGdXH9UESUNNXlZGFZMEhjnSsR+YLhaLxZLpTgHOhkMZqyGCZxlSr5mnlDEgtwydMkuIkw8yFnImpFslBxIC673Z7vb67P7p7P50HzoulQbV4z19xN4syR8+pjNIUgaGmUQguE2gQhyV5FrepZwhW1TYDOc4Ll4+Ifg8DL9gMv6xP+fbxuoJIqEseG8LqpoXvgRCQNg1RwJg-KBm4uKYbWYYIHwkhxJowxSFRvBmqI8ZktIsSgqE-aGlIUQ6BCJwQHA7DbMGnGhsuCAALR6jMOl3GmxkmaZ4LFAYRhmBY1gae0S7+HkPyBDSIkPHIzziakbkjEMWZPLwWa0ZUNR1DZYB2VhdZvL+EgqH2CzrCmsjiXcwQ9r5maZlMQUwVCSIIhFb6aQ5SRZCSNLZKoaxHnEKX6qIaUZf2WUBblFmlHmkVcdpSg9mkETZN8vBRMkgEzIa8gSN0qwRJa4yqOZkIGMOAqoEKIpihKUoyt1Wn+CJOQHumijROMI31V8+SklkIxRG5AwpApeUGHBN4lvej57aVBoKMEx3mqd5pCRB8Z-HF1qjFk+QqgoUgXm9xZ3mWyHfdhf0A2MZ0g5dypTHFprcPIhpST20EdWUhDEBAaPRQMcWRBErw0maVG4wgEk+S1-k5c9OhAA */
     id: "chat",
 
-    initial: "prompt",
+    initial: "ask_name",
 
     schema: {
       context: {} as { name: string; messages: string[]; error: any },
@@ -14,7 +14,7 @@ export const chatMachine = createMachine(
             type: "back";
           }
         | {
-            type: "buy";
+            type: "search_for_product";
           }
         | {
             type: "close";
@@ -29,14 +29,14 @@ export const chatMachine = createMachine(
             type: "restart";
           }
         | {
-            type: "sell";
+            type: "tranship_to_suport";
           }
         | {
             type: "submit";
             value: string;
           }
         | {
-            type: "talk";
+            type: "tranship_to_seller";
           }
         | {
             type: "yes";
@@ -58,30 +58,30 @@ export const chatMachine = createMachine(
       /**
       chat bot started
       greatings the user
-      ask name -> confirm name
-      if confirm name is yes, say so, and goto main menu
-      if confirm name is no, say so and back to ask name
-      main menu: show tree options: buy products, say about a sell made, talk to specialist
+      ask name -> confirm_name name
+      if confirm_name name is yes, say so, and goto main menu
+      if confirm_name name is no, say so and back to ask name
+      main menu: show tree options: search_for_product products, say about a tranship_to_suport made, tranship_to_seller to specialist
       */
-      prompt: {
-        entry: "message.prompt",
+      ask_name: {
+        entry: "message.ask_name",
         on: {
           submit: {
-            target: "confirm",
+            target: "confirm_name",
             cond: "can.submit",
           },
         },
       },
 
-      confirm: {
-        entry: "message.confirm",
+      confirm_name: {
+        entry: "message.confirm_name",
         on: {
           yes: {
             target: "welcome",
           },
 
           no: {
-            target: "prompt",
+            target: "ask_name",
           },
         },
       },
@@ -98,20 +98,20 @@ export const chatMachine = createMachine(
       menu: {
         entry: "message.menu",
         on: {
-          buy: {
-            target: "buy",
+          search_for_product: {
+            target: "search_for_product",
           },
-          sell: {
-            target: "sell",
+          tranship_to_suport: {
+            target: "tranship_to_suport",
           },
-          talk: {
-            target: "talk",
+          tranship_to_seller: {
+            target: "tranship_to_seller",
           },
         },
       },
 
-      buy: {
-        entry: "message.buy",
+      search_for_product: {
+        entry: "message.search_for_product",
         on: {
           back: {
             target: "menu",
@@ -119,8 +119,8 @@ export const chatMachine = createMachine(
         },
       },
 
-      sell: {
-        entry: "message.sell",
+      tranship_to_suport: {
+        entry: "message.tranship_to_suport",
         on: {
           back: {
             target: "menu",
@@ -128,8 +128,8 @@ export const chatMachine = createMachine(
         },
       },
 
-      talk: {
-        entry: "message.talk",
+      tranship_to_seller: {
+        entry: "message.tranship_to_seller",
         on: {
           back: {
             target: "menu",
@@ -141,7 +141,7 @@ export const chatMachine = createMachine(
         entry: "message.closed",
         on: {
           restart: {
-            target: "prompt",
+            target: "ask_name",
             actions: "restart.action",
           },
         },
@@ -160,37 +160,49 @@ export const chatMachine = createMachine(
       "restart.action": (context, event) => {
         console.log("restart.action");
       },
-      "message.buy": (context, event) =>
+      "message.search_for_product": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: buy"],
+          messages: (event) => [
+            ...context.messages,
+            "entry: 'search_for_product' state",
+          ],
         }),
       "message.closed": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: closed"],
+          messages: (event) => [...context.messages, "entry: 'closed' state"],
         }),
-      "message.confirm": (context, event) =>
+      "message.confirm_name": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: confirm"],
+          messages: (event) => [
+            ...context.messages,
+            "entry: 'confirm_name' state",
+          ],
         }),
       "message.menu": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: menu"],
+          messages: (event) => [...context.messages, "entry: 'menu' state"],
         }),
-      "message.prompt": (context, event) =>
+      "message.ask_name": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: prompt"],
+          messages: (event) => [...context.messages, "entry: 'ask_name' state"],
         }),
-      "message.sell": (context, event) =>
+      "message.tranship_to_suport": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: sell"],
+          messages: (event) => [
+            ...context.messages,
+            "entry: 'tranship_to_suport' state",
+          ],
         }),
-      "message.talk": (context, event) =>
+      "message.tranship_to_seller": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: talk"],
+          messages: (event) => [
+            ...context.messages,
+            "entry: 'tranship_to_seller' state",
+          ],
         }),
       "message.welcome": (context, event) =>
         assign({
-          messages: (event) => [...context.messages, "entry: welcome"],
+          messages: (event) => [...context.messages, "entry: 'welcome' state"],
         }),
     },
     guards: {
