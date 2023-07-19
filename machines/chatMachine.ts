@@ -2,10 +2,10 @@ import { assign, createMachine, interpret } from "xstate";
 
 export const chatMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QGMAWBDALgYmQGwHtYwBtABgF1FQAHIgS03oIDtqQAPRAFgCYAaEAE9EATm4A6AKx8AzAEYAHN0Vleo+fIC+WwWiwT0sANYB9FugC2YbLACuAI0uNyVJCDqxGzNu64JFWUkAdl4ZYO5ggDZuWQ0BYUR5KVkJdVkybjJ5YKlFGO4dPQxMCWRWADN6ACdLcysbIThXdk9vVnZ-eQVFCSjRRVEoqWDFRSl5UQSRBE1e0O4VMO4JsnzZIpB9UvKWKtr662wWAhb3NqYOvzEpKWleMLJRBeD5MmDBGbfeCUV5LKeylksikaw2ui2JQkAHcwHhykdYfCCNYJNZYLB0DAzrQGJdfKAujFRBJRMDuqNxPIolFPkklBIFksZKt1pttmiwCw7LYwOhqmhTBUCNVTDRqgQIHZkJgcR48T5OoheJoflFRrIxskQflaYkELxFtJsmRZFFVLxcsFguyodZudhMNV0CxYKh6DRTJgCKZ7HRqrLKK0FVdCcrVX0NVqUnkaXTZnEJKbFA9RENVFEyMNbQZ7TynS63R6vT7iHg8GBqnKLorrgaI+rAtGdXH9UESUNNXlZGFZMEhjnSsR+YLhaLxZLpTgHOhkMZqyGCZxlSr5mnlDEgtwydMkuIkw8yFnImpFslBxIC673Z7vb67P7p7P50HzoulQbV4z19xN4syR8+pjNIUgaGmUQguE2gQhyV5FrepZwhW1TYDOc4Ll4+Ifg8DL9gMv6xP+fbxuoJIqEseG8LqpoXvgRCQNg1RwJg-KBm4uKYbWYYIHwkhxJowxSFRvBmqI8ZktIsSgqE-aGlIUQ6BCJwQHA7DbMGnGhsuCAALR6jMOl3GmxkmaZ4LFAYRhmBY1gae0S7+HkPyBDSIkPHIzziakbkjEMWZPLwWa0ZUNR1DZYB2VhdZvL+EgqH2CzrCmsjiXcwQ9r5maZlMQUwVCSIIhFb6aQ5SRZCSNLZKoaxHnEKX6qIaUZf2WUBblFmlHmkVcdpSg9mkETZN8vBRMkgEzIa8gSN0qwRJa4yqOZkIGMOAqoEKIpihKUoyt1Wn+CJOQHumijROMI31V8+SklkIxRG5AwpApeUGHBN4lvej57aVBoKMEx3mqd5pCRB8Z-HF1qjFk+QqgoUgXm9xZ3mWyHfdhf0A2MZ0g5dypTHFprcPIhpST20EdWUhDEBAaPRQMcWRBErw0maVG4wgEk+S1-k5c9OhAA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QGMAWBDALgYmQV1kwHsBbMAJwH0B3dAO01kuOfQBsBrGgS01UvSUADhVhE6AbQAMAXUSghRWL27j5IAB6IALACYANCACeiABwBGAHTaA7DdMA2G+YCsulwGZd28wF9fhmhY2ORwmOjkmJboyJiqkrLqispxakiaOgbGiLoeVi7aAJxeNnmFhaa6pv6BGFHosFx06GTYsHgARiS80nLpySppoFoI5lKmppZVLg6FNp6mhbpShYYmCB4VlmMuLlI2Ul5S2qY2DjUgQVHI4gBm3OQklM2tRnC9SUqDdOojrja6KYuQrmCbuApLFxrRAeBweSyeWbODwnBy7bwXK6WG50e6PZ4tMDYOhED79L6pH7pP7LQqWca6M4ndEg0zQja2SwOXRoqS6UGHNx+AKXOqWahgNg3VqwVBEaiUEjobh0RVgOh4MkKCnxX6IOHwlwTDy7BxOcoVdn8myWDxSU0eUzaDw2bQuOyYsUSqWkIkQIjPIiYSgYABuYAJZC1IAGlL1CANCONpvN5TZ2Q2DishyR5hRjnR2k9WEsZA1bTAETQlFuRCoQnIRAgeFi0djuupiHMSxtZrNTvGbic7JN8LR2m03NBegOwtqJbLeGwmHI9Fl3CEzAD7UUkTbOqGGVGPa5fYHpiHNitbi5hQcbu8pnGTJsxaii+Xq7o683LFgkrYCh9xSDthi7E8+wcc9L3ZN06XMcwATsbttHGQp9jfSx-yrfha3rRtm1ibAOhiDhgO+eNlg8eF7AsKRzDhN0inTdY7XhRCCndaj3FKDxMJXNdUA3LdKB3OscBI5AyMSckQMPEYqJoiYxgYlEIRYnI+SmRDYUKd1TEdfZqhFLEBO-ITf23ACKGI0jyLjTsEEUyxaJUxj1Ng8YuUdRlcj0TZdEZfwRRJCA4HUK5PjkqkwIQABaBx2TilxLAtNL0vKPiTLFBomkJKKKMcgyHFtO8nQvLNuQnEdHXpN0pDNHk9MKHwi2ykscTxJ4XjAAqHNivMpCkOrNhamZUOqjMUWGziGu5WZgVazDvWlXrZMK2LNnhPICmOLNu0tDNlkmXZXSzHk4X5PNMMXPrQKPBi4SmZYJ1ZN1720K0VlK-YxvKcdbEw7DyGrPDhAIltMDu+ScjzQF6JsJZ0IOAE0StO96RavlzD0UFXCy+cojMn8RLEyJoZio9+S8elEKR-Z9h5KEMzp57dkFbxnBBAnRRLYmLNJ6zyApyi4dpxHdGRxm0YzVD8hmYrnVU502v8IA */
     id: "chat",
 
-    initial: "ask_name",
+    initial: "welcome",
 
     schema: {
       context: {} as { name: string; messages: string[]; error: any },
@@ -20,6 +20,9 @@ export const chatMachine = createMachine(
             type: "close";
           }
         | {
+            type: "customer_wants_to_talk_with_a_person";
+          }
+        | {
             type: "finish";
           }
         | {
@@ -27,6 +30,12 @@ export const chatMachine = createMachine(
           }
         | {
             type: "restart";
+          }
+        | {
+            type: "show_main_menu";
+          }
+        | {
+            type: "restart.action";
           }
         | {
             type: "tranship_to_suport";
@@ -43,6 +52,9 @@ export const chatMachine = createMachine(
           }
         | {
             type: "welcome.message";
+          }
+        | {
+            type: "do_not_have_name";
           },
     },
 
@@ -76,9 +88,7 @@ export const chatMachine = createMachine(
       confirm_name: {
         entry: "message.confirm_name",
         on: {
-          yes: {
-            target: "welcome",
-          },
+          yes: "menu",
 
           no: {
             target: "ask_name",
@@ -89,9 +99,10 @@ export const chatMachine = createMachine(
       welcome: {
         entry: "message.welcome",
         on: {
-          "welcome.message": {
+          show_main_menu: {
             target: "menu",
           },
+          do_not_have_name: "ask_name",
         },
       },
 
@@ -136,40 +147,21 @@ export const chatMachine = createMachine(
           },
         },
       },
-
-      closed: {
-        entry: "message.closed",
-        on: {
-          restart: {
-            target: "ask_name",
-            actions: "restart.action",
-          },
-        },
-      },
     },
 
     on: {
-      close: {
-        target: "closed",
-        actions: "restart.action",
-      },
+      customer_wants_to_talk_with_a_person: "tranship_to_suport",
+      "restart.action": ".welcome",
     },
   },
   {
     actions: {
-      "restart.action": (context, event) => {
-        console.log("restart.action");
-      },
       "message.search_for_product": (context, event) =>
         assign({
           messages: (event) => [
             ...context.messages,
             "entry: 'search_for_product' state",
           ],
-        }),
-      "message.closed": (context, event) =>
-        assign({
-          messages: (event) => [...context.messages, "entry: 'closed' state"],
         }),
       "message.confirm_name": (context, event) =>
         assign({

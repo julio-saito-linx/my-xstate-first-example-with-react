@@ -13,15 +13,18 @@ export interface Typegen0 {
     services: never;
   };
   eventsCausingActions: {
-    "message.ask_name": "close" | "no" | "restart" | "xstate.init";
-    "message.closed": "close";
+    "message.ask_name": "do_not_have_name" | "no";
     "message.confirm_name": "submit";
-    "message.menu": "back" | "welcome.message";
+    "message.menu": "back" | "show_main_menu" | "yes";
     "message.search_for_product": "search_for_product";
     "message.tranship_to_seller": "tranship_to_seller";
-    "message.tranship_to_suport": "tranship_to_suport";
-    "message.welcome": "yes";
-    "restart.action": "close" | "restart";
+    "message.tranship_to_suport":
+      | "customer_wants_to_talk_with_a_person"
+      | "tranship_to_suport";
+    "message.welcome":
+      | "customer_wants_to_talk_with_a_person"
+      | "restart.action"
+      | "xstate.init";
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {
@@ -30,7 +33,6 @@ export interface Typegen0 {
   eventsCausingServices: {};
   matchesStates:
     | "ask_name"
-    | "closed"
     | "confirm_name"
     | "menu"
     | "search_for_product"
