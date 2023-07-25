@@ -1,34 +1,56 @@
-import { createMachine, interpret } from "xstate";
+import { assign, createMachine, interpret } from "xstate";
+
+const schema = {
+  context: {} as { counter: number },
+  events: {} as {
+    type: "TIMER";
+  },
+};
 
 export const lightMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QBsCWUAWAXAdFATmGAHYDEAKgJICyAogEoDaADALqKgAOA9rKlqm7EOIAB6IAjADYpOZgHZmAFmYAOAMxL1q1QE5VAGhABPRACZmZnGYnz1U9eua7tZgL5ujaTLmNhkyNwA7hQ0DCzsSCA8fAJCIuII6rpKOACsqmnMyVqKShJKRqYIFlY2dg5OLqruniDe2DiEEKF0TGwiMfyCwlGJOemZ2SnqeQVFiKoSOEry8qr5aY5pabrMUh51xNwQcCINWJ283fF9iAC0UhMI52k4ug+PT0-qHl7ojQREvVzHcT9iRBKMzXVTydJpeRSVRSJYSMHyWZveofXz+QJBI6xHoJczyO5pAoOCTOdQSQlXEzmSw4eS2ewPeEpKaqZEHJqQLEnAGJLKpSy6MxSGwwpzqMyFKkINZySHQ2FkhGEzZuIA */
-    id: "light",
-    initial: "green",
+    /** @xstate-layout N4IgpgJg5mDOIC5QBsCWUAWAXAsgQwGMNUA7MAOliwH0BxAJzDBIGIAVASRwFEAlAbQAMAXUSgADgHtYqLKkkkxIAB6IAjADYN5QQHZBAFjUGAzACYAnJYCsugDQgAnojNmD5ABwWPJowZ+6BoIeBgC+oQ5omLiExGSUNACaYMjIkgDu7Fx8QqJIIFIycgpKqggGruTWrmrWHj5mHhqCmg7OCK7uXj5+AUEh4ZHo2PhEpBRU1LyQWTwCIkqFsvKK+WUVZlU1dQ1NLRptiB5q5Aa6uh7VZrpqVrUm4REgJJIQcEpRI7Hji9LLJWtEABaA5OYHWcgWKHQmEwh5PT4xMbxSYMJirCR-YoYlSICqHBBqNSCchmExNC4WEz6AwaMzWQYgRGjOITJIpNLpX5FFalRAmQQkkxaSwWawackWQwEtweHS6KnBKGNYJqRnM74omjTCDc-44srWcWeNQeQxBDSBaz+AlEza6ckaIy6ZqCKHUx6hIA */
+    id: "lightMachine",
+    initial: "st_Green",
     predictableActionArguments: true,
+    schema,
+    context: {
+      counter: 0,
+    },
     states: {
-      green: {
+      st_Green: {
         on: {
-          TIMER: "yellow",
+          TIMER: {
+            target: "st_Yellow",
+            actions: "act_timer",
+          },
         },
       },
-      yellow: {
+      st_Yellow: {
         on: {
-          TIMER: "red",
+          TIMER: {
+            target: "st_Red",
+            actions: "act_timer",
+          },
         },
       },
-      red: {
+      st_Red: {
         on: {
-          TIMER: "green",
+          TIMER: {
+            target: "st_Green",
+            actions: "act_timer",
+          },
         },
       },
     },
   },
   {
     actions: {
-      log: (context, event) => {
-        console.log(context, event);
-      },
+      act_timer: assign({
+        counter: (context, event) => {
+          return context.counter + 1;
+        },
+      }),
     },
   }
 );

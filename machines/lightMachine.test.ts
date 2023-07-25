@@ -2,21 +2,36 @@ import { interpret } from "xstate";
 import { lightMachine } from "./lightMachine";
 
 describe("lightMachine", () => {
-  it("should transition from green to yellow when receiving TIMER event", () => {
-    const lightService = interpret(lightMachine).start("green");
-    lightService.send("TIMER");
-    expect(lightService.getSnapshot().value).toBe("yellow");
-  });
+  it("should transition: st_Yellow -> st_Red -> st_Green when receiving TIMER event", () => {
+    let counterLocal = 0;
+    const interpreter = interpret(lightMachine);
 
-  it("should transition from yellow to red when receiving TIMER event", () => {
-    const lightService = interpret(lightMachine).start("yellow");
-    lightService.send("TIMER");
-    expect(lightService.getSnapshot().value).toBe("red");
-  });
+    interpreter.onChange((context) => {
+      // console.log(context);
+      counterLocal = context.counter;
+    });
 
-  it("should transition from red to green when receiving TIMER event", () => {
-    const lightService = interpret(lightMachine).start("red");
-    lightService.send("TIMER");
-    expect(lightService.getSnapshot().value).toBe("green");
+    interpreter.start("st_Yellow");
+    expect(counterLocal).toBe(0);
+
+    // st_Yellow -> st_Red
+    interpreter.send("TIMER");
+    expect(counterLocal).toBe(1);
+    expect(interpreter.getSnapshot().value).toBe("st_Red");
+
+    // st_Red -> st_Green
+    interpreter.send("TIMER");
+    expect(counterLocal).toBe(2);
+    expect(interpreter.getSnapshot().value).toBe("st_Green");
+
+    // st_Green -> st_Yellow
+    interpreter.send("TIMER");
+    expect(counterLocal).toBe(3);
+    expect(interpreter.getSnapshot().value).toBe("st_Yellow");
+
+    // st_Yellow -> st_Red
+    interpreter.send("TIMER");
+    expect(counterLocal).toBe(4);
+    expect(interpreter.getSnapshot().value).toBe("st_Red");
   });
 });
