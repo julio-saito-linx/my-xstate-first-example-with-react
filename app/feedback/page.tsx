@@ -24,9 +24,9 @@ function Feedback() {
   const [state, send] = useMachine(feedbackMachine);
 
   return (
-    <div className="w-full mt-8">
-      <div className="flex flex-row px-10">
-        <div className="basis-4/5 mx-auto flex flex-row justify-center">
+    <div className="h-full mt-8">
+      <div className="flex flex-col px-10">
+        <div className="my-2 min-h-[370px] flex flex-row justify-center">
           {/* 
           
           STATE: closed
@@ -335,7 +335,7 @@ function Feedback() {
             </Card>
           )}
         </div>
-        <div className="basis-1/5">
+        <div className="my-4">
           {state.context && (
             <div className="relative rounded-xl overflow-auto mx-auto w-full">
               <div className="bg-white px-6 py-8 shadow-xl text-slate-600 mx-auto overflow-auto text-xs dark:bg-slate-900 dark:text-slate-900">
