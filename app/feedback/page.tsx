@@ -25,15 +25,15 @@ function Feedback() {
 
   return (
     <div className="h-full mt-8">
-      <div className="flex flex-col px-10">
-        <div className="my-2 min-h-[370px] flex flex-row justify-center">
+      <div className="flex flex-col items-center px-10">
+        <div className="my-2 w-[350px] min-h-[370px] flex flex-row justify-center">
           {/* 
           
           STATE: closed
           
           */}
           {state.matches("closed") && (
-            <Card>
+            <Card className="w-[350px]">
               <CardHeader className="p-2">
                 <div className="p-4">
                   <CardTitle className="leading-tight"></CardTitle>
