@@ -1,6 +1,7 @@
 import { interpret } from "xstate";
 import { vendingMachineMachine } from "./vendingMachineMachine";
 
+// pnpm jest --watch --testPathPattern=vendingMachineMachine
 describe("vendingMachineMachine", () => {
   it("should transition if can", () => {
     let counterLocal = 0;

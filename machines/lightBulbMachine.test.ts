@@ -1,6 +1,7 @@
 import { interpret } from "xstate";
 import { lightBulbMachine } from "./lightBulbMachine";
 
+// pnpm jest --watch --testPathPattern=lightBulbMachine
 describe("lightBulbMachine", () => {
   it("should transition", () => {
     const interpreter = interpret(lightBulbMachine);

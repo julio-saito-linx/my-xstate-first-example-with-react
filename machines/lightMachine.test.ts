@@ -1,6 +1,7 @@
 import { interpret } from "xstate";
 import { lightMachine } from "./lightMachine";
 
+// pnpm jest --watch --testPathPattern=lightMachine
 describe("lightMachine", () => {
   it("should transition: st_Yellow -> st_Red -> st_Green when receiving TIMER event", () => {
     let counterLocal = 0;
