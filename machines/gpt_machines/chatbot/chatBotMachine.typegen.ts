@@ -15,7 +15,9 @@ export interface Typegen0 {
   eventsCausingActions: {};
   eventsCausingDelays: {};
   eventsCausingGuards: {};
-  eventsCausingServices: {};
-  matchesStates: "chatting" | "idle" | "receiving_message" | "sending";
+  eventsCausingServices: {
+    fetch_for_response: "MESSAGE";
+  };
+  matchesStates: "cannot_understand" | "idle" | "responding";
   tags: never;
 }
